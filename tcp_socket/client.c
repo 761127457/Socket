@@ -30,6 +30,8 @@ ssize_t readline(int fd, char *vptr, size_t maxlen)
 
 int main(int argc , char ** argv)
 {
+	printf("test socket in client %s\n", argv[1]);
+
 	/*声明套接字和链接服务器地址*/
 	int sockfd;
 	struct sockaddr_in servaddr;
@@ -77,13 +79,27 @@ int main(int argc , char ** argv)
 			exit(1);
 		}//if
 
+		printf("this is my log:%s\n", recvline);
+		int ret = strcmp(recvline, "quit\n");
+		printf("debug info:%s %d\n", recvline, ret);
+		printf("debug len:%d %d\n", strlen(recvline), strlen("quit"));
+
 		if(fputs(recvline , stdout) == EOF)
 		{
 			perror("fputs error");
 			exit(1);
 		}//if
+		
+		
+
+		if(ret == 0) {
+			printf("quit client and exit\n");
+			exit(1);
+			break;
+		}
 	}//while
 
+	printf("here close fd\n");
 	/*(5) 关闭套接字*/
 	close(sockfd);
 }

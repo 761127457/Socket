@@ -25,6 +25,14 @@ int main(int argc , char **argv)
 		exit(1);
 	}//if
 
+	// (1.1)设置套接字选项避免地址使用错误
+    int on=1;
+    if((setsockopt(listenfd,SOL_SOCKET,SO_REUSEADDR,&on,sizeof(on)))<0)
+    {
+        perror("setsockopt failed");
+        exit(1);
+    }
+
 	/*(2) 设置服务器sockaddr_in结构*/
 	bzero(&servaddr , sizeof(servaddr));
 
